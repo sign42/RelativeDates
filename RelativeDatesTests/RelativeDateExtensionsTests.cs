@@ -48,6 +48,36 @@ namespace RelativeDatesTests {
 			AssertAllDifferent(results);
 		}
 
+		[TestMethod]
+		[ExpectedException(typeof(ArgumentException))]
+		public void BeforeAndAfterWithNoValidResult() {
+			var start = DateTime.MaxValue;
+			var end = DateTime.MinValue;
+			start.BeforeAndAfter(end);
+		}
+
+		[TestMethod]
+		public void BeforeAndAfterSameValue() {
+			var date = DateTime.Now;
+			var result = date.BeforeAndAfter(date);
+			Assert.AreEqual(date, result);
+		}
+
+		[TestMethod]
+		public void BeforeAndAfter() {
+			var results = new List<DateTime>();
+			var start = DateTime.Now;
+			var end = start.AddDays(1);
+			for (int i = 0; i < 100; i++) {
+				var result = start.BeforeAndAfter(end);
+				Assert.IsTrue(result > start);
+				Assert.IsTrue(result < end);
+				results.Add(result);
+			}
+			// Check all of them against each other for uniqueness
+			AssertAllDifferent(results);
+		}
+
 		private static void AssertAllDifferent(List<DateTime> values) {
 			for(int i=0; i<values.Count; i++) {
 				for(int j=i+1; j<values.Count; j++) {

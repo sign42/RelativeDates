@@ -16,7 +16,7 @@ namespace RelativeDates
 			var rand = ThreadSafeRandom.NextDouble();
 			var start = DateTime.MinValue;
 			var range = periodEnd - start;
-			var adjustedTicksFromStart = (range.Ticks-1) * rand;
+			var adjustedTicksFromStart = (range.Ticks) * rand;
             return start + TimeSpan.FromTicks((long)adjustedTicksFromStart);
 		}
 
@@ -29,6 +29,22 @@ namespace RelativeDates
 			var rand = ThreadSafeRandom.NextDouble();
 			var end = DateTime.MaxValue;
 			var range = end - periodStart;
+			var adjustedTicksFromStart = (range.Ticks + 1) * rand;
+			return periodStart + TimeSpan.FromTicks((long)adjustedTicksFromStart);
+		}
+
+		/// <summary>
+		/// Generates a random date, if one exists
+		/// </summary>
+		/// <param name="periodStart">When the generated date must be after</param>
+		/// <param name="periodEnd">When the generated date must be before</param>
+		/// <throws name="ArgumentException">If periodStart is greater than periodEnd</throws>
+		/// <returns>A random date in the periodn</returns>
+		public static DateTime BeforeAndAfter(this DateTime periodStart, DateTime periodEnd) {
+			if (periodEnd < periodStart)
+				throw new ArgumentException("periodEnd must be greater than periodStart");
+			var rand = ThreadSafeRandom.NextDouble();
+			var range = periodEnd - periodStart;
 			var adjustedTicksFromStart = (range.Ticks + 1) * rand;
 			return periodStart + TimeSpan.FromTicks((long)adjustedTicksFromStart);
 		}
