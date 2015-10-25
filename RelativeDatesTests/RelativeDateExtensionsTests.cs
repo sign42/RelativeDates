@@ -13,18 +13,23 @@ namespace RelativeDatesTests {
 			// Going to accept this result
 			Assert.AreEqual(baseDate, result);
 		}
-
-		[TestMethod]
-		public void BeforeNow() {
+		private void TestInLoop(Func<DateTime> generator) {
 			var results = new List<DateTime>();
 			var baseDate = DateTime.Now;
-			for(int i=0; i< 100; i++) {
-				var result = baseDate.Before();
-				Assert.IsTrue(result < baseDate);
-                results.Add(result);
+			for (int i = 0; i < 100; i++) {
+				results.Add(generator());
 			}
 			// Check all of them against each other for uniqueness
 			AssertAllDifferent(results);
+		}
+		[TestMethod]
+		public void BeforeNow() {
+			var baseDate = DateTime.Now;
+			TestInLoop(() => {
+				var result = baseDate.Before();
+				Assert.IsTrue(result < baseDate);
+				return result;
+			});
 		}
 
 		[TestMethod]
@@ -37,15 +42,12 @@ namespace RelativeDatesTests {
 
 		[TestMethod]
 		public void AfterNow() {
-			var results = new List<DateTime>();
 			var baseDate = DateTime.Now;
-			for (int i = 0; i < 100; i++) {
+			TestInLoop(() => {
 				var result = baseDate.After();
 				Assert.IsTrue(result > baseDate);
-				results.Add(result);
-			}
-			// Check all of them against each other for uniqueness
-			AssertAllDifferent(results);
+				return result;
+			});
 		}
 
 		[TestMethod]
@@ -65,17 +67,14 @@ namespace RelativeDatesTests {
 
 		[TestMethod]
 		public void BeforeAndAfter() {
-			var results = new List<DateTime>();
 			var start = DateTime.Now;
 			var end = start.AddDays(1);
-			for (int i = 0; i < 100; i++) {
+			TestInLoop(() => {
 				var result = start.BeforeAndAfter(end);
 				Assert.IsTrue(result > start);
 				Assert.IsTrue(result < end);
-				results.Add(result);
-			}
-			// Check all of them against each other for uniqueness
-			AssertAllDifferent(results);
+				return result;
+			});
 		}
 
 		private static void AssertAllDifferent(List<DateTime> values) {
