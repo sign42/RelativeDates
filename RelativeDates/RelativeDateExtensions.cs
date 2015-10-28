@@ -22,17 +22,23 @@ namespace RelativeDates
 			var adjustedTicksFromStart = (range.Ticks + 1) * rand;
 			return periodStart + TimeSpan.FromTicks((long)adjustedTicksFromStart);
 		}
+
 		/// <summary>
-		/// 
+		/// Adds a constraint to the end of the acceptable period
 		/// </summary>
-		/// <param name="periodEnd"></param>
-		/// <returns></returns>
-		public static DateGenerator AndNoLater(this DateTime periodEnd) {
-			return new DateGenerator().AndNoLater(periodEnd);
+		/// <param name="end">The latest the resulting date can be</param>
+		/// <returns>DateBuilder object with this constraint</returns>
+		public static DateBuilder AndNoLater(this DateTime periodEnd) {
+			return new DateBuilder().AndNoLater(periodEnd);
 		}
 
-		public static DateGenerator AndNoEarlier(this DateTime periodStart) {
-			return new DateGenerator().AndNoEarlier(periodStart);
+		/// <summary>
+		/// Adds a constraint to the start of the acceptable period
+		/// </summary>
+		/// <param name="start">The earliest the resulting date can be</param>
+		/// <returns>DateBuilder object with this constraint</returns>
+		public static DateBuilder AndNoEarlier(this DateTime periodStart) {
+			return new DateBuilder().AndNoEarlier(periodStart);
 		}
 	}
 }

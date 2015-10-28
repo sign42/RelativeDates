@@ -52,7 +52,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="DateGeneratorTests.cs" />
+    <Compile Include="DateBuilderTests.cs" />
     <Compile Include="RelativeDateExtensionsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
